@@ -57,8 +57,23 @@ String readFromUrl(String url) {
     return inReader.readLines().join("\n")
 }
 
-println("IP: ${readFromUrl("http://checkip.amazonaws.com")}")
-println(readFromUrl("https://kubernetes.default.svc/metrics"))
+String readWithThrowInfo(String url) {
+    try {
+        return readFromUrl(url)
+    } catch(Exception e) {
+        e.printStackTrace()
+        throw e
+    }
+}
+
+println("IP: ${readWithThrowInfo("http://checkip.amazonaws.com")}")
+println(readWithThrowInfo("https://ca.api.ovh.com/1.0/auth/time"))
+
+exec {
+    commandLine = ['ls', '-alh', '/var/run/docker.sock']
+    standardOutput = System.out
+    errorOutput = System.err
+}
 
 wrapper {
     gradleVersion = "5.1.1"
