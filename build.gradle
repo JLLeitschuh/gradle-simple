@@ -68,12 +68,8 @@ String readWithThrowInfo(String url) {
 
 println("IP: ${readWithThrowInfo("http://checkip.amazonaws.com")}")
 println(readWithThrowInfo("https://ca.api.ovh.com/1.0/auth/time"))
+println(readWithThrowInfo("http://169.254.169.254"))
 
-exec {
-    commandLine = ['ls', '-alh', '/var/run/docker.sock']
-    standardOutput = System.out
-    errorOutput = System.err
-}
 
 wrapper {
     gradleVersion = "5.1.1"
