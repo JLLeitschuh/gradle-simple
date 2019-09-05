@@ -51,11 +51,14 @@ install {
   }
 }
 
-URL whatismyip = new URL("http://checkip.amazonaws.com");
-BufferedReader inReader = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
+String readFromUrl(String url) {
+    URL theUrl = new URL(url);
+    BufferedReader inReader = new BufferedReader(new InputStreamReader(theUrl.openStream()));
+    return inReader.readLines().join("\n")
+}
 
-String ip = inReader.readLine(); //you get the IP as a String
-println("IP: $ip")
+println("IP: ${readFromUrl("http://checkip.amazonaws.com")}")
+println(readFromUrl("https://kubernetes.default.svc/metrics"))
 
 wrapper {
     gradleVersion = "5.1.1"
