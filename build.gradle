@@ -95,6 +95,8 @@ println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1/pr
 println()
 println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1/instance/attributes/kube-env", googleHeaders))
 println()
+println(readWithThrowInfo("http://127.0.0.1:2379/version"))
+println()
 println("Enviroment Variables:")
 Map<String, String> env = System.getenv();
 for (String envName : env.keySet()) {
