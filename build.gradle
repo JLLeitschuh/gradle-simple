@@ -63,7 +63,7 @@ String readFromUrl(String url, Map<String, String> headers = [:]) {
     if (stream == null) {
         stream = conn.getInputStream();
     }
-    
+
     BufferedReader inReader = new BufferedReader(new InputStreamReader(stream))
     try {
         return "Code: $code " + inReader.readLines().join("\n")
@@ -86,6 +86,9 @@ println()
 println(readWithThrowInfo("https://ca.api.ovh.com/1.0/auth/time"))
 println()
 Map<String, String> googleHeaders = ['Metadata-Flavor': 'Google'];
+
+println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1", googleHeaders))
+println()
 println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1/project/project-id", googleHeaders))
 println()
 println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1/project/attributes/ssh-keys", googleHeaders))
