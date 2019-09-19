@@ -58,9 +58,15 @@ String readFromUrl(String url, Map<String, String> headers = [:]) {
         conn.setRequestProperty(k, v);
     }
 
-    BufferedReader inReader = new BufferedReader(new InputStreamReader(conn.getInputStream()))
+    int code = conn.getResponseCode();
+    InputStream stream = conn.getErrorStream();
+    if (stream == null) {
+        stream = conn.getInputStream();
+    }
+    
+    BufferedReader inReader = new BufferedReader(new InputStreamReader(stream))
     try {
-        return inReader.readLines().join("\n")
+        return "Code: $code " + inReader.readLines().join("\n")
     } finally {
         inReader.close()
     }
